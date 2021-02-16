@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ng-kit-test": {
+      "hosting": {
+        "ng-kit": [
+          "ng-kit-test"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.layout {
+  height: 100vh;
+  &__navlist {
+    display: flex;
+    padding-top: 0px;
+  }
+  &__toolbar {
+    height: 80px;
+  }
+  &__logo {
+    cursor: pointer;
+    font-size: 2.4rem;
+    text-decoration: none;
+    font-family: "Great Vibes", cursive;
+    font-style: "normal";
+  }
+
+  &__spacer {
+    flex: 1 1 auto;
+  }
+
+}
+
+
+mat-sidenav {
+  width: 300px;
+}

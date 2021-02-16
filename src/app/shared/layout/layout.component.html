@@ -1,0 +1,46 @@
+<mat-sidenav-container class="layout">
+  <mat-sidenav class="layout__sidenav" #sidenav mode="over">
+    <mat-selection-list [multiple]="false">
+      <mat-list-option *ngFor="let category of categories" [value]="category">
+        {{ category }}
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="layout__toolbar">
+      <button
+        *ngIf="isHandset$ | async"
+        onclick="this.blur()"
+        mat-icon-button
+        (click)="sidenav.open()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span *ngIf="!(isHandset$ | async)" class="layout__logo">Shkaff</span>
+      <span class="layout__spacer"></span>
+      <span *ngIf="(isHandset$ | async)" class="layout__logo" style="text-align: center; width: 100%;">Shkaff</span>
+      <mat-nav-list
+        *ngIf="!(isHandset$ | async)"
+       class="layout__navlist"
+      >
+        <a
+          *ngFor="let category of categories"
+          mat-list-item
+          [routerLink]="'/' + category"
+          >{{ category }}</a
+        >
+      </mat-nav-list>
+      <button mat-icon-button>
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+
+      <button mat-icon-button>
+        <mat-icon>login</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <ng-content></ng-content>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
