@@ -1,5 +1,7 @@
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { pluck } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-category-page',
@@ -7,14 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./category-page.component.scss']
 })
 export class CategoryPageComponent implements OnInit {
-
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) { }
+  category$ : Observable<string>
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.router.events.subscribe(res => console.log(res)
-    )
-    console.log(this.activatedRoute.snapshot.params["id"]);
-
+    this.category$ = this.activatedRoute.params
+    .pipe(pluck('id'));
   }
 
 }
