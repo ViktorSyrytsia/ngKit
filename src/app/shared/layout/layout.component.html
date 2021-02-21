@@ -19,15 +19,14 @@
       </button>
       <span *ngIf="!(isHandset$ | async)" class="layout__logo">Shkaff</span>
       <span class="layout__spacer"></span>
-      <span *ngIf="(isHandset$ | async)" class="layout__logo" style="text-align: center; width: 100%;">Shkaff</span>
+      <span *ngIf="(isHandset$ | async)" class="layout__logo" style="text-align: center; width: 100%;"></span>
       <mat-nav-list
         *ngIf="!(isHandset$ | async)"
        class="layout__navlist"
       >
         <a
           *ngFor="let category of categories"
-          mat-list-item
-          [routerLink]="'/' + category"
+          mat-list-item [routerLink]="['category', category]" routerLinkActive="active"
           >{{ category }}</a
         >
       </mat-nav-list>
