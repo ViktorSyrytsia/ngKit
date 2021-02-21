@@ -1,3 +1,4 @@
+import { CategoriesService } from './../../services/categories.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -21,10 +22,11 @@ export class LayoutComponent implements OnInit {
     shareReplay()
   );
   public opened: boolean;
-  public categories = ["Men","Women","Children","Home"]
-  constructor(private breakPointObserver: BreakpointObserver) { }
+  public categories$ : Observable<any>
+  constructor(private breakPointObserver: BreakpointObserver, private categoriesService: CategoriesService) { }
 
   ngOnInit(): void {
+    this.categories$ = this.categoriesService.getAllCategories();
   }
 
 }

@@ -15,6 +15,8 @@ import { environment } from '../environments/environment';
 import { HomePageComponent } from './home-page/home-page.component';
 import { InfoComponent } from './info/info.component';
 import { CategoryPageComponent } from './category-page/category-page.component';
+import { ProductCardComponent } from './product-card/product-card.component';
+import { StoreModule } from '@ngrx/store';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { CategoryPageComponent } from './category-page/category-page.component';
     HomePageComponent,
     InfoComponent,
     CategoryPageComponent,
+    ProductCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +36,7 @@ import { CategoryPageComponent } from './category-page/category-page.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    StoreModule.forRoot({}, {}),
   ],
   providers: [],
   bootstrap: [AppComponent]
