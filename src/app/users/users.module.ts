@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { EmailLoginComponent } from './email-login/email-login.component';
 import { GoogleSignInDirective } from './google-sign-in.directive';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -13,7 +14,8 @@ import { GoogleSignInDirective } from './google-sign-in.directive';
   imports: [
     CommonModule,
     UsersRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class UsersModule { }
