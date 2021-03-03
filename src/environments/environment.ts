@@ -11,7 +11,8 @@ export const environment = {
     storageBucket: "ng-kit-test.appspot.com",
     messagingSenderId: "684957357631",
     appId: "1:684957357631:web:e73d3cec9ef12bdfd20a8a",
-    measurementId: "G-5M352MMLMR"
+    measurementId: "G-5M352MMLMR",
+    adminEmail: "syrytsiaviktor@gmail.com"
   },
 };
 

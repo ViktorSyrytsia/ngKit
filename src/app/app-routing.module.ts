@@ -1,3 +1,4 @@
+import { AuthGuard } from './admin/auth.guard';
 import { CategoryPageComponent } from './category-page/category-page.component';
 import { InfoComponent } from './info/info.component';
 import { NgModule } from '@angular/core';
@@ -9,7 +10,8 @@ const routes: Routes = [
   {path:'info', component: InfoComponent},
   { path: 'category/:id', component: CategoryPageComponent },
   {path:'users', loadChildren:() => import('./users/users.module').then(m => m.UsersModule)},
-  {path:'admin', loadChildren:() => import('./admin/admin.module').then(m => m.AdminModule)}
+  {path:'admin', loadChildren:() => import('./admin/admin.module').then(m => m.AdminModule),
+   canActivate: [AuthGuard]}
 ];
 
 @NgModule({
