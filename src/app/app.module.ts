@@ -1,3 +1,4 @@
+import { AdminModule } from './admin/admin.module';
 import { UsersModule } from './users/users.module';
 import { SharedModule } from './shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -16,7 +17,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { InfoComponent } from './info/info.component';
 import { CategoryPageComponent } from './category-page/category-page.component';
 import { ProductCardComponent } from './product-card/product-card.component';
-import { StoreModule } from '@ngrx/store';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -25,18 +26,20 @@ import { StoreModule } from '@ngrx/store';
     HomePageComponent,
     InfoComponent,
     CategoryPageComponent,
-    ProductCardComponent,
+    ProductCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     SharedModule,
+    AdminModule,
+    ReactiveFormsModule,
     UsersModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule,
-    StoreModule.forRoot({}, {}),
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

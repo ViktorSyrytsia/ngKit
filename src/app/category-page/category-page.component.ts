@@ -1,7 +1,9 @@
-import { ProductsService } from './../services/products.service';
+import { IProduct } from './../models/product.model';
+import { CartServiceService } from './../services/cart-service.service';
+import { ProductsService } from '../services/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { pluck } from 'rxjs/operators';
+import { pluck, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,16 +12,23 @@ import { Observable } from 'rxjs';
   styleUrls: ['./category-page.component.scss']
 })
 export class CategoryPageComponent implements OnInit {
-  products$ : Observable<any>
-  constructor(private activatedRoute: ActivatedRoute, private productsService: ProductsService) { }
+  public products$ : Observable<any>
+  public productInCart$: Observable<IProduct[]> = this.cartService.getCart().pipe(map(cart => cart.productsInCart
+  ))
+  public loading: boolean = false;
+
+  constructor(private activatedRoute: ActivatedRoute,
+              private productsService: ProductsService,
+              private cartService: CartServiceService) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.activatedRoute.params
     .pipe(pluck('id')).subscribe(id => {
-      this.products$ = this.productsService.getProductByCategory(id)
+      this.products$ = this.productsService.getProductByCategory(id);
+      this.loading = false;
     }
     );
 
   }
-
 }

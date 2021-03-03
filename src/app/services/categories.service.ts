@@ -9,7 +9,7 @@ export class CategoriesService {
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) { }
 
-  getAllCategories() {
+  public getAllCategories() {
     return this.db.collection('categories').valueChanges()
   }
 }

@@ -8,7 +8,8 @@ const routes: Routes = [
   {path:'', component: HomePageComponent},
   {path:'info', component: InfoComponent},
   { path: 'category/:id', component: CategoryPageComponent },
-  {path:'users', loadChildren:() => import('./users/users.module').then(m => m.UsersModule)}
+  {path:'users', loadChildren:() => import('./users/users.module').then(m => m.UsersModule)},
+  {path:'admin', loadChildren:() => import('./admin/admin.module').then(m => m.AdminModule)}
 ];
 
 @NgModule({
