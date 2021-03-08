@@ -5,6 +5,7 @@ import { ICategory } from './../../models/category.model';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-category-page',
@@ -22,7 +23,8 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
   constructor(
     private categoriesService: CategoriesService,
     private fb: FormBuilder,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.categories$ = this.categoriesService.getAllCategories();
@@ -35,7 +37,9 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy():void {
-    this.categorySubscription.unsubscribe();
+    if (this.categorySubscription) {
+      this.categorySubscription.unsubscribe();
+    }
   }
 
   get name() {
@@ -113,5 +117,8 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
      }
      this.loading = false;
     });
+  }
+  public back(): void {
+    this.router.navigateByUrl('/admin');
   }
 }

@@ -4,7 +4,7 @@
   width: 350px;
   height: 400px;
   justify-content: space-between;
-  margin: 16px;
+  margin: 16px auto;
   padding: 16px;
   border-radius: 8px;
   &__buttons {
@@ -28,4 +28,9 @@
   & > button {
     width: 100%;
   }
+}
+
+.back-button {
+  display: block;
+  margin: 5px auto;
 }
