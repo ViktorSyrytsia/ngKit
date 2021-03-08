@@ -1,0 +1,179 @@
+<mat-tab-group dynamicHeight>
+  <mat-tab label="Create category">
+    <form class="create-category-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('create')">
+
+      <mat-form-field [color]="name.valid && 'primary'">
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Category name"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="name.invalid && name.dirty">
+          Name is required, and length must be 3-20 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [color]="description.valid && 'primary'">
+        <input
+          matInput
+          formControlName="description"
+          type="text"
+          placeholder="Category description"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="description.invalid && description.dirty">
+          Description length must be 6-150 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [color]="image.valid && 'primary'">
+        <input
+          matInput
+          formControlName="image"
+          type="text"
+          placeholder="Category image link"
+          autocomplete="off"
+        />
+      </mat-form-field>
+
+      <mat-form-field [color]="alt.valid && 'primary'">
+        <input
+          matInput
+          formControlName="alt"
+          type="text"
+          placeholder="Alternative text for image"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="name.invalid && name.dirty">
+          Alternative text length must be 3-25 characters
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-spinner">
+        <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
+
+        <button
+        *ngIf="!loading"
+        mat-raised-button
+        type="submit"
+        [disabled]="form.invalid">
+        <mat-icon>
+          add_circle_outline
+        </mat-icon>
+         Create
+      </button>
+      </div>
+
+
+    </form>
+  </mat-tab>
+
+  <mat-tab label="Update category">
+
+    <form class="create-category-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('update')">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Select an category</mat-label>
+        <mat-select >
+          <mat-option *ngFor="let category of (categories$ | async)"
+           (click)="onCategorySelect(category.id)">
+           {{category.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [color]="name.valid && 'primary'">
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Category name"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="name.invalid && name.dirty">
+          Name is required, and length must be 3-20 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [color]="description.valid && 'primary'">
+        <input
+          matInput
+          formControlName="description"
+          type="text"
+          placeholder="Category description"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="description.invalid && description.dirty">
+          Description length must be 6-150 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [color]="image.valid && 'primary'">
+        <input
+          matInput
+          formControlName="image"
+          type="text"
+          placeholder="Category image link"
+          autocomplete="off"
+        />
+      </mat-form-field>
+
+      <mat-form-field [color]="alt.valid && 'primary'">
+        <input
+          matInput
+          formControlName="alt"
+          type="text"
+          placeholder="Alternative text for image"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="name.invalid && name.dirty">
+          Alternative text length must be 3-25 characters
+        </mat-error>
+      </mat-form-field>
+
+      <div class="create-category-form__buttons">
+        <div class="button-spinner"  *ngIf="!loading">
+          <button
+          mat-raised-button
+          type="submit"
+          [disabled]="form.invalid">
+          <mat-icon>
+            autorenew
+          </mat-icon>
+           Update
+        </button>
+        </div>
+
+        <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
+
+        <div class="button-spinner"  *ngIf="!loading">
+          <button
+          color="warn"
+          mat-raised-button
+          type="button"
+          (click)="onDelete()"
+          [disabled]="form.invalid">
+          <mat-icon>
+            remove_circle_outline
+          </mat-icon>
+           Delete
+        </button>
+        </div>
+      </div>
+
+    </form>
+  </mat-tab>
+</mat-tab-group>
+
+
+
+
+

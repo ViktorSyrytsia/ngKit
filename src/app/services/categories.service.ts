@@ -28,7 +28,7 @@ export class CategoriesService {
     return this.db.collection(this.collection).doc(category.id).update(category)
   }
 
-  public deleteCategory(category: ICategory): Promise<void> {
-    return this.db.collection(this.collection).doc(category.id).delete()
+  public deleteCategory(categoryId: string): Promise<void> {
+    return this.db.collection(this.collection).doc(categoryId).delete()
   }
 }

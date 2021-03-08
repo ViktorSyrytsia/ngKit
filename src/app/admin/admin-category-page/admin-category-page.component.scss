@@ -1,0 +1,31 @@
+.create-category-form {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  height: 400px;
+  justify-content: space-between;
+  margin: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  &__buttons {
+    height: 36px;
+    display: flex;
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: center;
+    & > div {
+      margin: 0 5px 0 5px;
+      width: 48%;
+    }
+  }
+}
+
+.button-spinner {
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  & > button {
+    width: 100%;
+  }
+}

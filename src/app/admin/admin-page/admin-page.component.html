@@ -1,7 +1,2 @@
 <p>admin-page works!</p>
-<h2>Selected category: {{category$ | async | json}}</h2>
-<button
-*ngFor="let item of (categories$ | async)"
-mat-raised-button color='warn'
-(click)="onSelect(item.id)"
->{{item.name}} : {{item.id}}</button>
+<button mat-raised-button [routerLink]="['categories']">Categories</button>

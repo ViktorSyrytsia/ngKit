@@ -15,10 +15,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { LayoutComponent } from './layout/layout.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
-const components = [LayoutComponent];
+const components = [LayoutComponent, DeleteDialogComponent];
 
 const modules = [
   CommonModule,
@@ -35,8 +40,13 @@ const modules = [
   MatInputModule,
   MatSnackBarModule,
   MatGridListModule,
+  MatDialogModule,
+  MatSelectModule,
+  MatTabsModule,
+  MatProgressSpinnerModule,
   RouterModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+
 ];
 
 
