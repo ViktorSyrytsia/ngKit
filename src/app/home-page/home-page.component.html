@@ -1,6 +1,6 @@
 <div class="container">
   <mat-grid-list [cols]="(isHandset$ | async) ? 2 : 4" rowHeight="1:2">
-    <mat-grid-tile *ngFor="let category of (categories$ | async)" style="background-color: antiquewhite">
+    <mat-grid-tile *ngFor="let category of (categories$ | async)">
 
         <img class="image" [src]="category.image.link" [alt]="category.image.alt">
         <div class="shader">
