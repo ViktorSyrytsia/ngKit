@@ -3,10 +3,11 @@
     <mat-grid-tile *ngFor="let category of (categories$ | async)">
 
         <img class="image" [src]="category.image.link" [alt]="category.image.alt">
-        <div class="shader">
+        <div class="shader" [routerLink]="['category', category.name]">
           <h1>{{category.name}}</h1>
           <p>{{category.description}}</p>
-          <button mat-flat-button [routerLink]="['category', category.name]">Show more</button>
+          <button  [routerLink]="['category', category.name]" mat-button>
+            SHOW MORE</button>
         </div>
 
     </mat-grid-tile>
