@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-category-page',
@@ -27,12 +28,13 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private router: Router,
-    private storageService: StorageService) { }
+    private storageService: StorageService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.categories$ = this.categoriesService.getAllCategories();
     this.form = this.fb.group({
-      name:['', [Validators.maxLength(20), Validators.minLength(3)]],
+      name:['', [Validators.required ,Validators.maxLength(20), Validators.minLength(3)]],
       description:['', [Validators.maxLength(150), Validators.minLength(6)]],
       image:['',[]],
       alt:['',[Validators.maxLength(25), Validators.minLength(3)]]
@@ -75,26 +77,32 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     this.loading = true;
     const name = this.name.value;
     const description = this.description.value;
-    const image = await this.storageService.onUpload(this.id(), this.file);
+    let image = this.image.value;
     const alt = this.alt.value;
+
+    if (this.file) {
+      image = await this.storageService.onUpload('categories',this.file.name, this.file);
+    }
 
     if (option === 'create') {
       this.categoriesService.createCategory({name, description, image: {link: image, alt}}).then(res => {
+        this.snackBar.open(`Category: "${name}" was created`,'Close', { duration: 2000});
         this.form.reset();
         this.loading = false;
       })
       .catch(err => {
-        console.log(err);
+        this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
         this.loading = false;
       })
     }
     if (option === 'update') {
       this.categoriesService.updateCategory({id: this.selectedCategory.id, name, description, image: {link: image, alt}}).then(res => {
+        this.snackBar.open(`Category: "${this.selectedCategory.name}" was updated`,'Close', { duration: 2000});
         this.form.reset();
         this.loading = false;
       })
       .catch(err => {
-        console.log(err);
+        this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
         this.loading = false;
       })
     }
@@ -106,10 +114,11 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
      if (result) {
       this.categoriesService.deleteCategory(this.selectedCategory.id).then(res => {
+        this.snackBar.open(`Category: "${this.selectedCategory.name}" was deleted`,'Close', { duration: 2000});
         this.form.reset();
       })
       .catch(err => {
-        console.log(err);
+        this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
       })
      }
      this.loading = false;
@@ -129,9 +138,4 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
       alt: this.alt.value
     });
   }
-
-  private id(): string {
-    return Math.random().toString(36).substring(2);
-  }
-
 }

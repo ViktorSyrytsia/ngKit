@@ -61,6 +61,8 @@
         </mat-error>
       </mat-form-field>
 
+      <button class="back-button" mat-button color="warn" type="reset">Reset</button>
+
       <div class="button-spinner">
         <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
 
@@ -152,6 +154,8 @@
         </mat-error>
       </mat-form-field>
 
+      <button class="back-button" mat-button color="warn" type="reset">Reset</button>
+
       <div class="create-category-form__buttons">
         <div class="button-spinner"  *ngIf="!loading">
           <button
@@ -182,7 +186,6 @@
         </button>
         </div>
       </div>
-
     </form>
   </mat-tab>
 </mat-tab-group>
