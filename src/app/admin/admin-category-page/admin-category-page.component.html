@@ -40,6 +40,13 @@
         />
       </mat-form-field>
 
+      <div class="or">OR</div>
+
+      <button type="button" mat-raised-button (click)="fileInputCreate.click()">
+        <mat-icon>upload_file</mat-icon> Choose File
+      </button>
+      <input hidden (change)="onImageAdd($event)" #fileInputCreate type="file" id="file">
+
       <mat-form-field [color]="alt.valid && 'primary'">
         <input
           matInput
@@ -61,7 +68,8 @@
         *ngIf="!loading"
         mat-raised-button
         type="submit"
-        [disabled]="form.invalid">
+        [disabled]="form.invalid"
+        color="primary">
         <mat-icon>
           add_circle_outline
         </mat-icon>
@@ -125,6 +133,11 @@
         />
       </mat-form-field>
 
+      <button type="button" mat-raised-button (click)="fileInputUpdate.click()">
+        <mat-icon>upload_file</mat-icon> Choose File
+      </button>
+      <input hidden (change)="onImageAdd($event)" #fileInputUpdate type="file" id="file">
+
       <mat-form-field [color]="alt.valid && 'primary'">
         <input
           matInput
@@ -144,7 +157,8 @@
           <button
           mat-raised-button
           type="submit"
-          [disabled]="form.invalid">
+          [disabled]="form.invalid"
+          color="primary">
           <mat-icon>
             autorenew
           </mat-icon>
@@ -173,7 +187,7 @@
   </mat-tab>
 </mat-tab-group>
 
-<button class="back-button" mat-raised-button color="primary" (click)="back()">Back to Admin Panel</button>
+<button class="back-button" mat-raised-button color="accent" (click)="back()">Back to Admin Panel</button>
 
 
 

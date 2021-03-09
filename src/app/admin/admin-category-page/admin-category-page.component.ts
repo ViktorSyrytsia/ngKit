@@ -1,3 +1,4 @@
+import { StorageService } from './../../services/storage.service';
 import { DeleteDialogComponent } from './../../shared/delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriesService } from './../../services/categories.service';
@@ -19,17 +20,19 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
 
   public loading: boolean = false;
   private selectedCategory: ICategory;
+  private file: any;
 
   constructor(
     private categoriesService: CategoriesService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.categories$ = this.categoriesService.getAllCategories();
     this.form = this.fb.group({
-      name:['', [Validators.required, Validators.maxLength(20), Validators.minLength(3)]],
+      name:['', [Validators.maxLength(20), Validators.minLength(3)]],
       description:['', [Validators.maxLength(150), Validators.minLength(6)]],
       image:['',[]],
       alt:['',[Validators.maxLength(25), Validators.minLength(3)]]
@@ -55,7 +58,6 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     return this.form.get('alt')
   }
 
-
   public onCategorySelect(id: string): void {
     this.categorySubscription = this.categoriesService.getCategoryById(id).subscribe(category => {
       this.form.setValue({
@@ -69,16 +71,15 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
 
   }
 
-  public onSubmit(option: 'create' | 'update'): void {
+  public async onSubmit(option: 'create' | 'update'): Promise<void> {
     this.loading = true;
     const name = this.name.value;
     const description = this.description.value;
-    const image = this.image.value;
+    const image = await this.storageService.onUpload(this.id(), this.file);
     const alt = this.alt.value;
 
     if (option === 'create') {
       this.categoriesService.createCategory({name, description, image: {link: image, alt}}).then(res => {
-        console.log(res);
         this.form.reset();
         this.loading = false;
       })
@@ -88,10 +89,7 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
       })
     }
     if (option === 'update') {
-      console.log({id: this.selectedCategory.id, name, description, image: {link: image, alt}});
-
       this.categoriesService.updateCategory({id: this.selectedCategory.id, name, description, image: {link: image, alt}}).then(res => {
-        console.log(res);
         this.form.reset();
         this.loading = false;
       })
@@ -108,7 +106,6 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
      if (result) {
       this.categoriesService.deleteCategory(this.selectedCategory.id).then(res => {
-        console.log(res);
         this.form.reset();
       })
       .catch(err => {
@@ -118,7 +115,23 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
      this.loading = false;
     });
   }
+
   public back(): void {
     this.router.navigateByUrl('/admin');
   }
+
+  public onImageAdd(event: any) {
+    this.file = event.target.files[0];
+    this.form.setValue({
+      name: this.name.value,
+      description: this.description.value,
+      image: 'File was added',
+      alt: this.alt.value
+    });
+  }
+
+  private id(): string {
+    return Math.random().toString(36).substring(2);
+  }
+
 }
