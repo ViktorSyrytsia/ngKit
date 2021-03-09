@@ -17,7 +17,7 @@
       >
         <mat-icon>menu</mat-icon>
       </button>
-      <span *ngIf="!(isHandset$ | async)" class="layout__logo">Shkaff</span>
+      <span *ngIf="!(isHandset$ | async)" class="layout__logo" routerLink="/" >Shkaff</span>
       <span class="layout__spacer"></span>
       <span *ngIf="(isHandset$ | async)" class="layout__logo" style="text-align: center; width: 100%;"></span>
       <mat-nav-list
