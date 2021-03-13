@@ -1,6 +1,6 @@
 <mat-tab-group dynamicHeight>
   <mat-tab label="Create category">
-    <form class="create-category-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('create')">
+    <form class="create category-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('create')">
 
       <mat-form-field [color]="name.valid && 'primary'">
         <input
@@ -85,7 +85,7 @@
 
   <mat-tab label="Update category">
 
-    <form class="create-category-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('update')">
+    <form class="update category-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('update')">
 
       <mat-form-field appearance="fill">
         <mat-label>Select an category</mat-label>

@@ -1,1 +1,135 @@
-<p>admin-subcategory-page works!</p>
+<mat-tab-group dynamicHeight>
+  <mat-tab label="Create subcategory">
+    <form class="create subcategory-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('create')">
+
+      <mat-form-field [color]="name.valid && 'primary'">
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Subcategory name"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="name.invalid && name.dirty">
+          Name is required, and length must be 3-20 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" [color]="category.valid && 'primary'">
+        <mat-label>Select an category</mat-label>
+        <mat-select formControlName="category" >
+          <mat-option *ngFor="let category of (categories$ | async)" [value]="category.name">
+           {{category.name}}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="category.invalid && category.dirty">
+          Category is required
+        </mat-error>
+      </mat-form-field>
+
+      <button class="back-button" mat-button color="warn" type="reset">Reset</button>
+
+      <div class="button-spinner">
+        <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
+
+        <button
+        *ngIf="!loading"
+        mat-raised-button
+        type="submit"
+        [disabled]="form.invalid"
+        color="primary">
+        <mat-icon>
+          add_circle_outline
+        </mat-icon>
+         Create
+      </button>
+      </div>
+
+
+    </form>
+  </mat-tab>
+
+  <mat-tab label="Update subcategory">
+
+    <form class="update subcategory-form mat-elevation-z4" [formGroup]="form" (ngSubmit)="onSubmit('update')">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Select an subcategory</mat-label>
+        <mat-select >
+          <mat-option *ngFor="let subcategory of (subcategories$ | async)"
+           (click)="onSubcategorySelect(subcategory.id)">
+           {{subcategory.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [color]="name.valid && 'primary'">
+        <input
+          matInput
+          formControlName="name"
+          type="text"
+          placeholder="Subcategory name"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="name.invalid && name.dirty">
+          Name is required, and length must be 3-20 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" [color]="category.valid && 'primary'">
+        <mat-label>Select an category</mat-label>
+        <mat-select formControlName="category" >
+          <mat-option *ngFor="let category of (categories$ | async)" [value]="category.name">
+           {{category.name}}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="category.invalid && category.dirty">
+          Category is required
+        </mat-error>
+      </mat-form-field>
+
+      <button class="back-button" mat-button color="warn" type="reset">Reset</button>
+
+      <div class="create-category-form__buttons">
+        <div class="button-spinner"  *ngIf="!loading">
+          <button
+          mat-raised-button
+          type="submit"
+          [disabled]="form.invalid"
+          color="primary">
+          <mat-icon>
+            autorenew
+          </mat-icon>
+           Update
+        </button>
+        </div>
+
+        <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
+
+        <div class="button-spinner"  *ngIf="!loading">
+          <button
+          color="warn"
+          mat-raised-button
+          type="button"
+          (click)="onDelete()"
+          [disabled]="form.invalid">
+          <mat-icon>
+            remove_circle_outline
+          </mat-icon>
+           Delete
+        </button>
+        </div>
+      </div>
+    </form>
+  </mat-tab>
+</mat-tab-group>
+
+<button class="back-button" mat-raised-button color="accent" (click)="back()">Back to Admin Panel</button>
+
+
+
+

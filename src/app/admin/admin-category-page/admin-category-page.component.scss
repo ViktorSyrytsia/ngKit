@@ -1,8 +1,7 @@
-.create-category-form {
+.category-form {
   display: flex;
   flex-direction: column;
   width: 350px;
-  height: 500px;
   justify-content: space-between;
   margin: 16px auto;
   padding: 16px;
@@ -18,6 +17,13 @@
       width: 48%;
     }
   }
+}
+
+.create {
+  height: 375px;
+}
+.update {
+  height: 475px;
 }
 
 .button-spinner {

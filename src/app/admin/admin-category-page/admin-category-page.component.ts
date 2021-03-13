@@ -70,7 +70,6 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
       });
       this.selectedCategory = category;
     })
-
   }
 
   public async onSubmit(option: 'create' | 'update'): Promise<void> {
