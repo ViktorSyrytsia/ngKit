@@ -1,3 +1,4 @@
+import { DeleteDialogComponent } from './../../shared/delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISubcategory } from './../../models/subcategory.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -80,9 +81,33 @@ export class AdminSubcategoryPageComponent implements OnInit, OnDestroy {
       })
     }
     if (option === 'update') {
-
+      this.subcategoriesService.updateSubcategory({id: this.selectedSubcategory.id, name, category}).then(res => {
+        this.snackBar.open(`Subcategory: "${this.selectedSubcategory.name}" was updated`,'Close', { duration: 2000});
+        this.form.reset();
+        this.loading = false;
+      })
+      .catch(err => {
+        this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
+        this.loading = false;
+      })
     }
   }
 
+  public onDelete(): void {
+    this.loading = true;
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {data: this.selectedSubcategory});
+    dialogRef.afterClosed().subscribe(result => {
+     if (result) {
+      this.subcategoriesService.deleteSubcategory(this.selectedSubcategory.id).then(res => {
+        this.snackBar.open(`Subcategory: "${this.selectedSubcategory.name}" was deleted`,'Close', { duration: 2000});
+        this.form.reset();
+      })
+      .catch(err => {
+        this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
+      })
+     }
+     this.loading = false;
+    });
+  }
 
 }
