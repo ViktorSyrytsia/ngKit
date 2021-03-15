@@ -2,7 +2,7 @@ import { IImage } from './image.model';
 import { ISizes } from './sizes.model';
 
 export interface IProduct {
-  id: string;
+  id?: string;
   category: string;
   subcategory: string;
   name: string;

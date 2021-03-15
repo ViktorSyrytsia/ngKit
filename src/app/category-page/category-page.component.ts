@@ -1,6 +1,6 @@
+import { ProductService } from './../services/product.service';
 import { IProduct } from './../models/product.model';
 import { CartServiceService } from './../services/cart-service.service';
-import { ProductsService } from '../services/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { pluck, map } from 'rxjs/operators';
@@ -18,7 +18,7 @@ export class CategoryPageComponent implements OnInit {
   public loading: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private productsService: ProductsService,
+              private productsService: ProductService,
               private cartService: CartServiceService) { }
 
   ngOnInit(): void {

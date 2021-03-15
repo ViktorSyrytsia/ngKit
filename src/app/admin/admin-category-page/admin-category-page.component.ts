@@ -84,7 +84,7 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     }
 
     if (option === 'create') {
-      this.categoriesService.createCategory({name, description, image: {link: image, alt}}).then(res => {
+      this.categoriesService.createCategory({name, description, image: {link: image, alt, id: 1}}).then(res => {
         this.snackBar.open(`Category: "${name}" was created`,'Close', { duration: 2000});
         this.form.reset();
         this.loading = false;
@@ -95,7 +95,7 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
       })
     }
     if (option === 'update') {
-      this.categoriesService.updateCategory({id: this.selectedCategory.id, name, description, image: {link: image, alt}}).then(res => {
+      this.categoriesService.updateCategory({id: this.selectedCategory.id, name, description, image: {link: image, alt, id: 1}}).then(res => {
         this.snackBar.open(`Category: "${this.selectedCategory.name}" was updated`,'Close', { duration: 2000});
         this.form.reset();
         this.loading = false;

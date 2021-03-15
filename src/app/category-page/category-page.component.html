@@ -1,6 +1,6 @@
 <h2>{{productInCart$ | async | json}}</h2>
 
-  <mat-grid-list *ngIf="!loading else spinner" cols="3" rowHeight="1:1.45">
+  <mat-grid-list *ngIf="!loading else spinner" cols="3" rowHeight="1:2">
     <mat-grid-tile *ngFor="let product of products$ | async">
       <app-product-card [product]="product"></app-product-card>
     </mat-grid-tile>
