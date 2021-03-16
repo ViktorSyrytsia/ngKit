@@ -57,3 +57,20 @@
 .sizes_box {
   margin-top: 10px;
 }
+
+.images {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  & > img {
+    margin: 2px;
+    width: 108px;
+    padding: 2px;
+    cursor: pointer;
+    background-color: white;
+    &:hover {
+      background-color: #f44336;
+    }
+  }
+}

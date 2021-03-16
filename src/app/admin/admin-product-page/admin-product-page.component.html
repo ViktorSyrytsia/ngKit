@@ -12,7 +12,7 @@
         />
 
         <mat-error *ngIf="name.invalid && name.dirty">
-          Name is required, and length must be 3-20 characters
+          Name is required, and length must be 3-50 characters
         </mat-error>
       </mat-form-field>
 
@@ -70,11 +70,16 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="or">Added images: {{files.length}}</div>
       <button type="button" mat-raised-button (click)="fileInputCreate.click()">
         <mat-icon>upload_file</mat-icon> Choose File
       </button>
-      <input hidden (change)="onImageAdd($event)" #fileInputCreate type="file" id="file">
+      <input hidden (change)="onFileAndUrlAdd($event)" #fileInputCreate type="file" id="file">
+
+      <div class="images">
+        <img
+        (click)="onFileAndUrlDelete($event, url.id)"
+        *ngFor="let url of urls;" [src]="url.src" alt="image url">
+      </div>
 
       <div formGroupName="sizes" class="sizes_box">
         <div class="sizes_group">
@@ -115,7 +120,7 @@
         </div>
      </div>
 
-      <button class="back-button" mat-button color="warn" type="reset">Reset</button>
+      <button id="reset" class="back-button" mat-button color="warn" type="reset">Reset</button>
 
       <div class="button-spinner">
         <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
@@ -161,7 +166,7 @@
         />
 
         <mat-error *ngIf="name.invalid && name.dirty">
-          Name is required, and length must be 3-20 characters
+          Name is required, and length must be 3-50 characters
         </mat-error>
       </mat-form-field>
 
@@ -219,10 +224,18 @@
         </mat-error>
       </mat-form-field>
 
-      <div style="width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap;">
+      <button type="button" mat-raised-button (click)="fileInputCreate.click()">
+        <mat-icon>upload_file</mat-icon> Choose File
+      </button>
+      <input hidden (change)="onFileAndUrlAdd($event)" #fileInputCreate type="file" id="file">
+
+      <div class="images">
         <img
-        (click)="onImageDelete($event, index)"
-        style="width: 105px;" *ngFor="let item of selectedProduct?.images; let index" [src]="item.link" [alt]="item.alt">
+        (click)="onImageDelete($event, image)"
+        *ngFor="let image of selectedProduct?.images;" [src]="image.link" [alt]="image.alt">
+        <img
+        (click)="onFileAndUrlDelete($event, url.id)"
+        *ngFor="let url of urls;" [src]="url.src" alt="image url">
       </div>
 
       <div formGroupName="sizes" class="sizes_box">
@@ -264,7 +277,7 @@
         </div>
      </div>
 
-      <button class="back-button" mat-button color="warn" type="reset">Reset</button>
+      <button id="reset" class="back-button" mat-button color="warn" type="reset">Reset</button>
 
       <div class="create-product-form__buttons">
         <div class="button-spinner"  *ngIf="!loading">

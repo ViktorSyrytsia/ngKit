@@ -1,3 +1,4 @@
+import { IImage } from './../../models/image.model';
 import { ProductService } from './../../services/product.service';
 import { StorageService } from './../../services/storage.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +12,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ISizes } from 'src/app/models/sizes.model';
+import * as uuid from 'uuid';
+
+interface IFile {
+  data: any;
+  id: number;
+}
+
+interface IUrl {
+  src: any;
+  id: number;
+}
 
 @Component({
   selector: 'app-admin-product-page',
@@ -28,7 +39,8 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
   public selectedProduct: IProduct;
   public productSubscription: Subscription;
-  public files: any[] = [];
+  public files: IFile[] = [];
+  public urls: IUrl[] = [];
 
   constructor(
     private categoriesService: CategoriesService,
@@ -45,7 +57,7 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
     this.subcategories$ = this.subcategoriesService.getAllSubcategories();
     this.products$ = this.productsService.getAllProducts();
     this.form = this.fb.group({
-      name:['', [Validators.required ,Validators.maxLength(20), Validators.minLength(3)]],
+      name:['', [Validators.required ,Validators.maxLength(50), Validators.minLength(3)]],
       description:['', [Validators.maxLength(150), Validators.minLength(6)]],
       price:['',[Validators.required, Validators.maxLength(5), Validators.minLength(1)]],
       category:['',[Validators.required]],
@@ -88,10 +100,6 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
     return this.form.get('sizes')
   }
 
-  public getImagesLength() {
-    return this.files.length
-  }
-
   public async onSubmit(option: 'create' | 'update'): Promise<void> {
     this.loading = true;
     const name = this.name.value;
@@ -102,47 +110,62 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
     const sizes = this.sizes.value;
 
     if (option === 'create') {
-      const links = await Promise.all(this.files.map(async (file): Promise<string> => {
-        return await this.storageService.onUpload(`products/${name}`,file.name,file);
+      const images: IImage[] = await Promise.all(this.files.map(async (file): Promise<IImage> => {
+        return {
+          id: file.id,
+          link:  await this.storageService.onUpload(`products/${name}`,file.data.name,file.data),
+          alt: 'Product Image'
+        };
       }))
-      this.productsService.createProduct({name, description, price, category, subcategory, sizes,
-        images: links.map((link, index) => ({link, alt: 'Product photo', id: index}))
-      }).then(res => {
+      this.productsService.createProduct({name, description, price, category, subcategory, sizes, images })
+      .then(res => {
         this.snackBar.open(`Product: "${name}" was created`,'Close', { duration: 2000});
-        this.form.reset();
-        this.loading = false;
+        this.resetAll();
       })
       .catch(err => {
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
-        this.loading = false;
+        this.resetAll();
       })
     }
     if (option === 'update') {
-      const images = this.images.value;
-      console.log({name, description, price, category, subcategory, sizes, images});
-       this.productsService.updateProduct({name, description, price, category, subcategory, sizes, images,
+
+      const images = this.selectedProduct.images;
+      const newImages: IImage[] = await Promise.all(this.files.map(async (file): Promise<IImage> => {
+        return {
+          id: file.id,
+          link:  await this.storageService.onUpload(`products/${name}`,file.data.name,file.data),
+          alt: 'Product Image'
+        };
+      }))
+      const concatenated = [...images,...newImages];
+
+      this.productsService.updateProduct({name, description, price, category, subcategory, sizes, images: concatenated,
       id: this.selectedProduct.id })
        .then(res => {
         this.snackBar.open(`Product: "${name}" was updated`,'Close', { duration: 2000});
-        this.form.reset();
-        this.loading = false;
+        this.resetAll();
       })
       .catch(err => {
         console.log(err);
-
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
-        this.loading = false;
+        this.resetAll();
       })
     }
   }
 
-
-  public back(): void {
-    this.router.navigateByUrl('/admin');
+  public onFileAndUrlAdd(event: any) {
+    const reader = new FileReader();
+    const id = uuid.v4();
+    this.files.push({data: event.target.files[0], id}); // Add to files array
+    reader.onload = (event: any) => {
+      this.urls.push({src: event.target.result, id}); // Add to urls array
+    };
+    reader.readAsDataURL(event.target.files[0]);
   }
 
-  public onImageAdd(event: any) {
-    this.files.push(event.target.files[0]);
+  public onFileAndUrlDelete(event, urlId) {
+    this.files = this.files.filter(file => file.id !== urlId);
+    this.urls = this.urls.filter(url => url.id !== urlId);
   }
 
   public onProductSelect(id: string): void {
@@ -160,8 +183,23 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  public onImageDelete(event, index) {
-    const filtredArray =  this.selectedProduct.images.filter(img => img.id !== index.id);
-    this.selectedProduct.images = filtredArray;
+  public onImageDelete(event, image: IImage) {
+    const filteredArray =  this.selectedProduct.images.filter(img => img.id !== image.id);
+    this.selectedProduct.images = filteredArray;
+  }
+
+  public back(): void {
+    this.router.navigateByUrl('/admin');
+  }
+
+  private resetAll(): void {
+    this.files = [];
+    this.urls = [];
+    this.loading = false;
+    if (this.productSubscription) {
+      this.productSubscription.unsubscribe();
+      this.selectedProduct = null;
+    }
+    document.getElementById('reset').click();
   }
 }
