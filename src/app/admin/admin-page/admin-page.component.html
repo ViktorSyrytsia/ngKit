@@ -1,4 +1,11 @@
-<p>admin-page works!</p>
-<button mat-raised-button [routerLink]="['categories']">Categories</button>
-<button mat-raised-button [routerLink]="['subcategories']">Subcategories</button>
-<button mat-raised-button [routerLink]="['products']">Products</button>
+<div class="admin-container">
+  <h2>Welcome on Admin Panel</h2>
+  <h3>You can select one of the options:</h3>
+  <div class="admin-buttons">
+    <button mat-raised-button [routerLink]="['categories']">Categories</button>
+    <button mat-raised-button [routerLink]="['subcategories']">Subcategories</button>
+    <button mat-raised-button [routerLink]="['products']">Products</button>
+    <button mat-raised-button >Orders</button>
+  </div>
+
+</div>
