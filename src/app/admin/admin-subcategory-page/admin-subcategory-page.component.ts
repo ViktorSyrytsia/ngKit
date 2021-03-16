@@ -76,19 +76,17 @@ export class AdminSubcategoryPageComponent implements OnInit, OnDestroy {
     if (option === 'create') {
       this.subcategoriesService.createSubcategory({name, category}).then(res => {
         this.snackBar.open(`Subcategory: "${name}" was created`,'Close', { duration: 2000});
-        this.form.reset();
-        this.loading = false;
+        this.resetAll();
       })
     }
     if (option === 'update') {
       this.subcategoriesService.updateSubcategory({id: this.selectedSubcategory.id, name, category}).then(res => {
         this.snackBar.open(`Subcategory: "${this.selectedSubcategory.name}" was updated`,'Close', { duration: 2000});
-        this.form.reset();
-        this.loading = false;
+        this.resetAll();
       })
       .catch(err => {
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
-        this.loading = false;
+        this.resetAll();
       })
     }
   }
@@ -100,14 +98,23 @@ export class AdminSubcategoryPageComponent implements OnInit, OnDestroy {
      if (result) {
       this.subcategoriesService.deleteSubcategory(this.selectedSubcategory.id).then(res => {
         this.snackBar.open(`Subcategory: "${this.selectedSubcategory.name}" was deleted`,'Close', { duration: 2000});
-        this.form.reset();
+        this.resetAll();
       })
       .catch(err => {
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
       })
      }
-     this.loading = false;
+     this.resetAll();
     });
+  }
+
+  private resetAll(): void {
+    this.loading = false;
+    if (this.subcategorySubscription) {
+      this.subcategorySubscription.unsubscribe();
+      this.selectedSubcategory = null;
+    }
+    document.getElementById('reset').click();
   }
 
 }

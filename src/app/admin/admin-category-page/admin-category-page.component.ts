@@ -86,23 +86,22 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
     if (option === 'create') {
       this.categoriesService.createCategory({name, description, image: {link: image, alt, id: 1}}).then(res => {
         this.snackBar.open(`Category: "${name}" was created`,'Close', { duration: 2000});
-        this.form.reset();
-        this.loading = false;
+        this.resetAll();
       })
       .catch(err => {
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
-        this.loading = false;
+        this.resetAll();
       })
     }
     if (option === 'update') {
       this.categoriesService.updateCategory({id: this.selectedCategory.id, name, description, image: {link: image, alt, id: 1}}).then(res => {
         this.snackBar.open(`Category: "${this.selectedCategory.name}" was updated`,'Close', { duration: 2000});
         this.form.reset();
-        this.loading = false;
+        this.resetAll();
       })
       .catch(err => {
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
-        this.loading = false;
+        this.resetAll();
       })
     }
   }
@@ -114,13 +113,13 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
      if (result) {
       this.categoriesService.deleteCategory(this.selectedCategory.id).then(res => {
         this.snackBar.open(`Category: "${this.selectedCategory.name}" was deleted`,'Close', { duration: 2000});
-        this.form.reset();
+        this.resetAll();
       })
       .catch(err => {
         this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
       })
      }
-     this.loading = false;
+     this.resetAll();
     });
   }
 
@@ -136,5 +135,14 @@ export class AdminCategoryPageComponent implements OnInit, OnDestroy {
       image: 'File was added',
       alt: this.alt.value
     });
+  }
+
+  private resetAll(): void {
+    this.loading = false;
+    if (this.categorySubscription) {
+      this.categorySubscription.unsubscribe();
+      this.selectedCategory = null;
+    }
+    document.getElementById('reset').click();
   }
 }
