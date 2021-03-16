@@ -42,7 +42,7 @@
 
       <div class="or">OR</div>
 
-      <button type="button" mat-raised-button (click)="fileInputCreate.click()">
+      <button type="button" mat-raised-button (click)="fileInputCreate.click()"  style="margin-bottom: 10px;">
         <mat-icon>upload_file</mat-icon> Choose File
       </button>
       <input hidden (change)="onImageAdd($event)" #fileInputCreate type="file" id="file">
@@ -135,10 +135,10 @@
         />
       </mat-form-field>
 
-      <button type="button" mat-raised-button (click)="fileInputUpdate.click()">
+      <button type="button" mat-raised-button (click)="fileInputUpdate.click()" style="margin-bottom: 10px;" >
         <mat-icon>upload_file</mat-icon> Choose File
       </button>
-      <input hidden (change)="onImageAdd($event)" #fileInputUpdate type="file" id="file">
+      <input hidden (change)="onImageAdd($event)" #fileInputUpdate type="file" id="file" >
 
       <mat-form-field [color]="alt.valid && 'primary'">
         <input

@@ -1,3 +1,4 @@
+import { DeleteDialogComponent } from './../../shared/delete-dialog/delete-dialog.component';
 import { IImage } from './../../models/image.model';
 import { ProductService } from './../../services/product.service';
 import { StorageService } from './../../services/storage.service';
@@ -186,6 +187,23 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
   public onImageDelete(event, image: IImage) {
     const filteredArray =  this.selectedProduct.images.filter(img => img.id !== image.id);
     this.selectedProduct.images = filteredArray;
+  }
+
+  public onDelete(): void {
+    this.loading = true;
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {data: this.selectedProduct});
+    dialogRef.afterClosed().subscribe(result => {
+     if (result) {
+      this.productsService.deleteProduct(this.selectedProduct.id).then(res => {
+        this.snackBar.open(`Product: "${this.selectedProduct.name}" was deleted`,'Close', { duration: 2000});
+        this.resetAll();
+      })
+      .catch(err => {
+        this.snackBar.open(`Something went wrong!`,'Close', { duration: 2000});
+      })
+     }
+     this.resetAll();
+    });
   }
 
   public back(): void {
