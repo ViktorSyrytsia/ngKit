@@ -13,12 +13,43 @@ export class ProductService {
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {}
 
+  public getCollectionLength() {
+     this.db.collection(this.collection).get().toPromise().then(snap => {
+       console.log(snap);
+
+     })
+  }
+
   public getProductByQuery(
-    category: string, subcategory: string, orderBy: string, startAt: number, endAt: number
+    category: string
     ): Observable<IProduct[]> {
     return this.db.collection<IProduct>(this.collection,(ref) => ref
     .where('category','==',category)
-    .orderBy('updatedAt','desc')).valueChanges()
+    .orderBy('updatedAt','desc')
+    .limit(3))
+    .valueChanges()
+  }
+
+  public getProductByQueryNext(
+    category: string, last: IProduct, field: string
+    ): Observable<IProduct[]> {
+    return this.db.collection<IProduct>(this.collection,(ref) => ref
+    .where('category','==',category)
+    .orderBy(field ,'desc')
+    .startAfter(last[field])
+    .limit(3))
+    .valueChanges()
+  }
+
+  public getProductByQueryPrev(
+    category: string, first: IProduct, field: string
+    ): Observable<IProduct[]> {
+    return this.db.collection<IProduct>(this.collection,(ref) => ref
+    .where('category','==',category)
+    .orderBy(field ,'desc')
+    .endBefore(first[field])
+    .limitToLast(3))
+    .valueChanges()
   }
 
   public getAllProducts(): Observable<IProduct[]> {

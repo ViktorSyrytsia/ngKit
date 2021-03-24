@@ -50,11 +50,12 @@ export class CategoryPageComponent implements OnInit {
               private subcategoryService: SubcategoriesService) { }
 
   ngOnInit(): void {
+    this.productsService.getCollectionLength();
     this.onColumnsChange(window.innerWidth);
     this.loading = true;
     this.activatedRoute.params
     .pipe(pluck('id')).subscribe(id => {
-      this.products$ = this.productsService.getProductByQuery(id, null, 'newest', 1, 3)
+      this.products$ = this.productsService.getProductByQuery(id)
       this.category = id;
       this.subcategories$ = this.subcategoryService.getSubcategoriesByCategory(id);
       this.loading = false;
@@ -82,7 +83,16 @@ export class CategoryPageComponent implements OnInit {
   }
 
   public onPageChange(event) {
-    console.log(event);
+    this.products$.subscribe(res => {
+      console.log(res);
+
+      if (event === 'next') {
+        this.products$ = this.productsService.getProductByQueryNext(this.category, res[2], 'updatedAt' )
+      } else if(event === 'prev') {
+        this.products$ = this.productsService.getProductByQueryPrev(this.category, res[0], 'updatedAt' )
+      }
+
+    })
   }
 
   private onColumnsChange(width: number): void {
