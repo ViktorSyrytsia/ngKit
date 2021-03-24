@@ -118,7 +118,8 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
           alt: 'Product Image'
         };
       }))
-      this.productsService.createProduct({name, description, price, category, subcategory, sizes, images })
+      this.productsService.createProduct(
+        {name, description, price, category, subcategory, sizes, images, createdAt: Date.now(), updatedAt: Date.now() })
       .then(res => {
         this.snackBar.open(`Product: "${name}" was created`,'Close', { duration: 2000});
         this.resetAll();
@@ -141,7 +142,7 @@ export class AdminProductPageComponent implements OnInit, OnDestroy {
       const concatenated = [...images,...newImages];
 
       this.productsService.updateProduct({name, description, price, category, subcategory, sizes, images: concatenated,
-      id: this.selectedProduct.id })
+      id: this.selectedProduct.id, updatedAt: Date.now() })
        .then(res => {
         this.snackBar.open(`Product: "${name}" was updated`,'Close', { duration: 2000});
         this.resetAll();

@@ -1,18 +1,12 @@
-<mat-card class="example-card">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>{{product.name}}</mat-card-title>
-    <mat-card-subtitle>{{product.category}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image [src]="product.images[0].link" [alt]="product.images[0].alt">
-  <mat-card-content>
-    <p>
-      {{product.description}}
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Buy</button>
-    <button mat-button (click)="addToCart()">Add to cart</button>
-    <button mat-button (click)="removeFromCart()">Remove from cart</button>
-  </mat-card-actions>
-</mat-card>
+<div class="card">
+  <div class="card__image">
+    <img class="card__image_img" [src]="product.images[0].link" [alt]="product.images[0].alt">
+  </div>
+  <div class="card__name">
+    <div>{{product.name}}</div>
+  </div>
+  <div class="card__footer">
+    <button mat-button>Buy: {{product.price}}$</button>
+    <button mat-button>Details</button>
+  </div>
+</div>

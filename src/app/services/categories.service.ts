@@ -22,7 +22,7 @@ export class CategoriesService {
     return this.db
       .collection<ICategory>(this.collection)
       .doc(id)
-      .valueChanges({ idField: 'id' });
+      .valueChanges();
   }
 
   public createCategory(

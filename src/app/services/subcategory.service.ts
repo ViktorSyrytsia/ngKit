@@ -12,6 +12,10 @@ export class SubcategoriesService {
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {}
 
+  public getSubcategoriesByCategory(category: string): Observable<ISubcategory[]> {
+    return this.db.collection<ISubcategory>(this.collection,(ref) => ref.where('category','==',category)).valueChanges()
+  }
+
   public getAllSubcategories(): Observable<ISubcategory[]> {
     return this.db
       .collection<ISubcategory>(this.collection)

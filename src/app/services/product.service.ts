@@ -9,11 +9,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class ProductService {
   private collection: string = 'products';
+  private limit: number = 9;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {}
 
-  public getProductByCategory(category: string) {
-    return this.db.collection(this.collection,(ref) => ref.where('category','==',category)).valueChanges()
+  public getProductByQuery(
+    category: string, subcategory: string, orderBy: string, startAt: number, endAt: number
+    ): Observable<IProduct[]> {
+    return this.db.collection<IProduct>(this.collection,(ref) => ref
+    .where('category','==',category)
+    .orderBy('updatedAt','desc')).valueChanges()
   }
 
   public getAllProducts(): Observable<IProduct[]> {

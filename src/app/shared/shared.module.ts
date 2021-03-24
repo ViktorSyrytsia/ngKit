@@ -19,6 +19,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { LayoutComponent } from './layout/layout.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
@@ -34,8 +36,10 @@ const modules = [
   MatSidenavModule,
   MatListModule,
   MatMenuModule,
+  MatPaginatorModule,
   MatIconModule,
   MatCardModule,
+  MatChipsModule,
   MatFormFieldModule,
   MatInputModule,
   MatSnackBarModule,

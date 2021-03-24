@@ -10,4 +10,6 @@ export interface IProduct {
   description: string;
   sizes: ISizes;
   images: IImage[];
+  createdAt?: number;
+  updatedAt?: number;
 }
