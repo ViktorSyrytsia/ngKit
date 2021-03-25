@@ -1,4 +1,5 @@
 export interface SortOptions {
-  value: string[];
+  value: string;
+  direction: 'asc' | 'desc';
   viewValue: string;
 }

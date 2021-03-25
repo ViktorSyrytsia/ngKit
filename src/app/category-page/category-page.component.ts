@@ -25,18 +25,20 @@ export class CategoryPageComponent implements OnInit {
   public selectedSubcategory: string;
   public selectedSort: string;
   public length = 100;
-  public pageSize = 10;
-  public pageSizeOptions: number[] = [5, 10, 25, 100];
+  public pageSize = 2;
+  public pageSizeOptions: number[] = [];
   public pageEvent: PageEvent;
+  public currentPageIndex = 0;
   // public productInCart$: Observable<IProduct[]> = this.cartService.getCart().pipe(map(cart => cart.productsInCart
   // ))
   public loading: boolean = true;
   public cols: number;
   public options: SortOptions[] = [
-    {value: ['updatedAt'], viewValue: 'Newest'},
-    {value: ['price','asc'], viewValue: 'Price ascending'},
-    {value: ['price','desc'], viewValue: 'Price descending'}
+    {value: 'updatedAt', direction:'desc', viewValue: 'Newest'},
+    {value: 'price', direction: 'asc', viewValue: 'Price ascending'},
+    {value: 'price', direction: 'desc', viewValue: 'Price descending'}
   ];
+  public sortOption: SortOptions = this.options[0];
 
   @HostListener('window:resize', ['$event'])
     onResize() {
@@ -50,12 +52,14 @@ export class CategoryPageComponent implements OnInit {
               private subcategoryService: SubcategoriesService) { }
 
   ngOnInit(): void {
-    this.productsService.getCollectionLength();
+    this.productsService.getCollectionLength().then(res => {
+      this.length = res;
+    })
     this.onColumnsChange(window.innerWidth);
     this.loading = true;
     this.activatedRoute.params
     .pipe(pluck('id')).subscribe(id => {
-      this.products$ = this.productsService.getProductByQuery(id)
+      this.products$ = this.productsService.getInitialProducts(id, this.pageSize, this.sortOption)
       this.category = id;
       this.subcategories$ = this.subcategoryService.getSubcategoriesByCategory(id);
       this.loading = false;
@@ -83,15 +87,26 @@ export class CategoryPageComponent implements OnInit {
   }
 
   public onPageChange(event) {
-    this.products$.subscribe(res => {
-      console.log(res);
+    this.products$.subscribe((res: IProduct[]) => {
 
-      if (event === 'next') {
-        this.products$ = this.productsService.getProductByQueryNext(this.category, res[2], 'updatedAt' )
-      } else if(event === 'prev') {
-        this.products$ = this.productsService.getProductByQueryPrev(this.category, res[0], 'updatedAt' )
+      if (event.pageIndex > this.currentPageIndex) {
+
+        this.currentPageIndex = event.pageIndex;
+        this.products$ = this.productsService.getNextProducts(
+          this.category,
+          this.pageSize,
+          res[this.pageSize - 1],
+          this.sortOption )
+
+      } else if (event.pageIndex < this.currentPageIndex) {
+
+        this.currentPageIndex = event.pageIndex;
+        this.products$ = this.productsService.getPrevProducts(
+          this.category,
+          this.pageSize,
+          res[0],
+          this.sortOption )
       }
-
     })
   }
 

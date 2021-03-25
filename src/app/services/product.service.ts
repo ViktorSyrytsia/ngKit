@@ -1,3 +1,4 @@
+import { SortOptions } from './../models/sort-options.model';
 import { IProduct } from './../models/product.model';
 import { Observable } from 'rxjs';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
@@ -13,42 +14,47 @@ export class ProductService {
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {}
 
-  public getCollectionLength() {
-     this.db.collection(this.collection).get().toPromise().then(snap => {
-       console.log(snap);
-
+  public getCollectionLength(): Promise<number> {
+     return this.db.collection(this.collection).get().toPromise()
+     .then(snap => {
+       return snap.size;
+     })
+     .catch(err => {
+       return 0
      })
   }
 
-  public getProductByQuery(
-    category: string
+  public getInitialProducts(
+    category: string,
+    limit: number,
+    defaultSortOption: SortOptions
     ): Observable<IProduct[]> {
     return this.db.collection<IProduct>(this.collection,(ref) => ref
     .where('category','==',category)
-    .orderBy('updatedAt','desc')
-    .limit(3))
+    .orderBy(defaultSortOption.value, defaultSortOption.direction)
+    .limit(limit))
     .valueChanges()
   }
 
-  public getProductByQueryNext(
-    category: string, last: IProduct, field: string
+  public getNextProducts(
+    category: string, limit:number, lastInRes: IProduct, sortOption: SortOptions
     ): Observable<IProduct[]> {
     return this.db.collection<IProduct>(this.collection,(ref) => ref
     .where('category','==',category)
-    .orderBy(field ,'desc')
-    .startAfter(last[field])
-    .limit(3))
+    .orderBy(sortOption.value ,sortOption.direction)
+    .startAfter(lastInRes[sortOption.value])
+    .limit(limit))
     .valueChanges()
   }
 
-  public getProductByQueryPrev(
-    category: string, first: IProduct, field: string
+  public getPrevProducts(
+    category: string, limit: number, firstInRes: IProduct, sortOption: SortOptions
     ): Observable<IProduct[]> {
     return this.db.collection<IProduct>(this.collection,(ref) => ref
     .where('category','==',category)
-    .orderBy(field ,'desc')
-    .endBefore(first[field])
-    .limitToLast(3))
+    .orderBy(sortOption.value ,sortOption.direction)
+    .endBefore(firstInRes[sortOption.value])
+    .limitToLast(limit))
     .valueChanges()
   }
 
